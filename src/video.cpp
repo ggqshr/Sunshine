@@ -1281,6 +1281,10 @@ void encode_run(
   const encoder_t &encoder,
   void *channel_data) {
 
+  // set minimum frame time
+  auto minimum_frame_time = std::chrono::milliseconds(1000 / config::video.min_fps_target);
+  BOOST_LOG(info) << "Minimum frame time set to "sv << minimum_frame_time.count() << "ms, based on min fps target of "sv << config::video.min_fps_target << "."sv;
+
   auto session = make_session(disp.get(), encoder, config, disp->width, disp->height, std::move(hwdevice));
   if(!session) {
     return;
@@ -1311,9 +1315,9 @@ void encode_run(
       idr_events->pop();
     }
 
-    // Encode at a minimum of 10 FPS to avoid image quality issues with static content
+    // Encode at a minimum of FPS to avoid image quality issues with static content
     if(!frame->key_frame || images->peek()) {
-      if(auto img = images->pop(100ms)) {
+      if(auto img = images->pop(minimum_frame_time)) {
         if(session->device->convert(*img)) {
           BOOST_LOG(error) << "Could not convert image"sv;
           return;

@@ -378,6 +378,26 @@ dwmflush
 
       dwmflush = enabled
 
+min_fps_target
+^^^^^^^^^^^^^^
+
+**Description**
+   The minimum FPS Sunshine will attempt to maintain. Increasing this value slightly may help when streaming
+   mostly static content.
+
+   .. Warning:: Higher values will consume more bandwidth.
+
+**Default**
+   ``10``
+
+**Range**
+   ``1-240``
+
+**Example**
+   .. code-block:: text
+
+      min_fps_target = 10
+
 Audio
 -----
 

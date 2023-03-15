@@ -314,7 +314,8 @@ video_t video {
 
   0, // hevc_mode
 
-  1, // min_threads
+  10, // min_fps_target
+  1,  // min_threads
   {
     "superfast"s,   // preset
     "zerolatency"s, // tune
@@ -886,6 +887,7 @@ void apply_config(std::unordered_map<std::string, std::string> &&vars) {
   string_f(vars, "adapter_name", video.adapter_name);
   string_f(vars, "output_name", video.output_name);
   bool_f(vars, "dwmflush", video.dwmflush);
+  int_between_f(vars, "min_fps_target", video.min_fps_target, { 1, 240 });
 
   path_f(vars, "pkey", nvhttp.pkey);
   path_f(vars, "cert", nvhttp.cert);
